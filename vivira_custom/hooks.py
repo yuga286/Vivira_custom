@@ -137,14 +137,14 @@ app_license = "mit"
 # Document Events
 # ---------------
 # Hook on document methods and events
+doc_events = {
+	"Payment Entry": {
+		"on_submit": "vivira_custom.rooms_management.payment.update_room_rent_slip_from_payment_entry",
+		"on_cancel": "vivira_custom.rooms_management.payment.update_room_rent_slip_from_payment_entry",
+	}
+}
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+after_migrate = "vivira_custom.rooms_management.setup.ensure_room_rent_slip_payment_entry_field"
 
 # Scheduled Tasks
 # ---------------
@@ -255,4 +255,3 @@ app_license = "mit"
 # ------------
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
-

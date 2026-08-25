@@ -1,0 +1,121 @@
+{
+ "app": "vivira_custom",
+ "charts": [],
+ "content": "[{\"id\":\"rooms-management-links\",\"type\":\"card\",\"data\":{\"card_name\":\"Rooms Management\",\"col\":4}}]",
+ "creation": "2026-08-25 00:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "home",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Rooms Management",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rooms Management",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Room Rent",
+   "link_count": 0,
+   "link_to": "Room Rent",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Room Rent Entry",
+   "link_count": 0,
+   "link_to": "Room Rent Entry",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Room Rent Slip",
+   "link_count": 0,
+   "link_to": "Room Rent Slip",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Room Rent Register",
+   "link_count": 0,
+   "link_to": "Room Rent Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-08-25 01:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Rooms Management",
+ "name": "Rooms Management",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Project Manager"
+  },
+  {
+   "role": "Projects User"
+  }
+ ],
+ "sequence_id": 0.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "{}",
+   "label": "Room Rent List",
+   "link_to": "Room Rent",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "{}",
+   "label": "Room Rent Entry List",
+   "link_to": "Room Rent Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "{}",
+   "label": "Room Rent Slip List",
+   "link_to": "Room Rent Slip",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Rooms Management"
+}

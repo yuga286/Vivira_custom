@@ -1,0 +1,173 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-08-25 00:00:00.000000",
+ "doctype": "DocType",
+ "document_type": "Transaction",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "rent_period_section",
+  "posting_date",
+  "column_break_period",
+  "start_date",
+  "end_date",
+  "room_rent_details_section",
+  "room_rents",
+  "summary_section",
+  "number_of_room_rents",
+  "column_break_summary",
+  "total_rent_amount",
+  "status_section",
+  "room_rent_slips_created"
+ ],
+ "fields": [
+  {
+   "default": "RRE-.YYYY.-.#####",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "RRE-.YYYY.-.#####",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rent_period_section",
+   "fieldtype": "Section Break",
+   "label": "Rent Period"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_period",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "room_rent_details_section",
+   "fieldtype": "Section Break",
+   "label": "Room Rent Details"
+  },
+  {
+   "fieldname": "room_rents",
+   "fieldtype": "Table",
+   "label": "Room Rents",
+   "options": "Room Rent Entry Detail"
+  },
+  {
+   "fieldname": "summary_section",
+   "fieldtype": "Section Break",
+   "label": "Summary"
+  },
+  {
+   "fieldname": "number_of_room_rents",
+   "fieldtype": "Int",
+   "label": "Room Rent Records",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_summary",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_rent_amount",
+   "fieldtype": "Currency",
+   "label": "Total Rent Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "status_section",
+   "fieldtype": "Section Break",
+   "label": "Status"
+  },
+  {
+   "default": "0",
+   "fieldname": "room_rent_slips_created",
+   "fieldtype": "Check",
+   "label": "Room Rent Slips Created",
+   "read_only": 1
+  }
+ ],
+ "idx": 0,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-08-25 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Rooms Management",
+ "name": "Room Rent Entry",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Project Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Projects User"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

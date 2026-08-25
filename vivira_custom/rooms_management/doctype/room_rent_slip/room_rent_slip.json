@@ -1,0 +1,279 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-08-25 00:00:00.000000",
+ "doctype": "DocType",
+ "document_type": "Transaction",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "rent_details_section",
+  "room_rent_entry",
+  "room_rent",
+  "supplier",
+  "column_break_rent_details",
+  "posting_date",
+  "start_date",
+  "end_date",
+  "room_details_section",
+  "date_of_entry",
+  "no_of_rooms",
+  "no_of_workers",
+  "payment_details_section",
+  "total_amount",
+  "paid_amount",
+  "column_break_payment_details",
+  "outstanding_amount",
+  "payment_status",
+  "payee_details_section",
+  "account_holder_name",
+  "pan_no",
+  "account_number",
+  "column_break_payee_details",
+  "ifsc_code",
+  "bank_name",
+  "remarks_section",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "default": "RRS-.YYYY.-.#####",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "RRS-.YYYY.-.#####",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rent_details_section",
+   "fieldtype": "Section Break",
+   "label": "Rent Details"
+  },
+  {
+   "fieldname": "room_rent_entry",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Room Rent Entry",
+   "options": "Room Rent Entry",
+   "reqd": 1
+  },
+  {
+   "fieldname": "room_rent",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Room Rent",
+   "options": "Room Rent",
+   "reqd": 1
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Supplier",
+   "options": "Supplier",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_rent_details",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "room_details_section",
+   "fieldtype": "Section Break",
+   "label": "Room Details"
+  },
+  {
+   "fieldname": "date_of_entry",
+   "fieldtype": "Date",
+   "label": "Date of Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "no_of_rooms",
+   "fieldtype": "Int",
+   "label": "No. of Rooms",
+   "read_only": 1
+  },
+  {
+   "fieldname": "no_of_workers",
+   "fieldtype": "Int",
+   "label": "No. of Workers",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_details_section",
+   "fieldtype": "Section Break",
+   "label": "Payment Details"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Total Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "paid_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Paid Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_payment_details",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "outstanding_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Outstanding Amount",
+   "read_only": 1
+  },
+  {
+   "default": "Unpaid",
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Payment Status",
+   "options": "Unpaid\nPartially Paid\nPaid",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payee_details_section",
+   "fieldtype": "Section Break",
+   "label": "Payee Details"
+  },
+  {
+   "fieldname": "account_holder_name",
+   "fieldtype": "Data",
+   "label": "Account Holder Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "pan_no",
+   "fieldtype": "Data",
+   "label": "PAN No",
+   "read_only": 1
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Account Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_payee_details",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ifsc_code",
+   "fieldtype": "Data",
+   "label": "IFSC Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Data",
+   "label": "Bank Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remarks_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  }
+ ],
+ "idx": 0,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-08-25 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Rooms Management",
+ "name": "Room Rent Slip",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Project Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Projects User"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

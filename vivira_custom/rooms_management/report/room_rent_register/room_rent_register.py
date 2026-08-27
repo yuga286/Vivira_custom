@@ -11,20 +11,6 @@ def execute(filters=None):
 
 
 def get_columns():
-	# return [
-	# 	{"label": _("Room Rent"), "fieldname": "name", "fieldtype": "Link", "options": "Room Rent", "width": 170},
-	# 	{"label": _("Date of Entry"), "fieldname": "date_of_entry", "fieldtype": "Date", "width": 110},
-	# 	{"label": _("No. of Rooms"), "fieldname": "no_of_rooms", "fieldtype": "Int", "width": 110},
-	# 	{"label": _("No. of Workers"), "fieldname": "no_of_workers", "fieldtype": "Int", "width": 120},
-	# 	{"label": _("Monthly Rent"), "fieldname": "monthly_rent", "fieldtype": "Currency", "width": 120},
-	# 	{"label": _("Advance"), "fieldname": "advance_amount", "fieldtype": "Currency", "width": 110},
-	# 	{"label": _("Account Holder"), "fieldname": "account_holder_name", "fieldtype": "Data", "width": 160},
-	# 	{"label": _("Paid Amount"), "fieldname": "paid_amount", "fieldtype": "Currency", "width": 120},
-	# 	{"label": _("Outstanding Amount"), "fieldname": "outstanding_amount", "fieldtype": "Currency", "width": 150},
-	# 	{"label": _("Status"), "fieldname": "status", "fieldtype": "Data", "width": 130},
-	# 	{"label": _("Last Paid Date"), "fieldname": "last_paid_date", "fieldtype": "Date", "width": 120},
-	# 	{"label": _("Remarks"), "fieldname": "remarks", "fieldtype": "Small Text", "width": 220},
-	# ]
 
 	return [
 		{

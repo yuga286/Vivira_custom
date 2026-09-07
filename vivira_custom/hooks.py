@@ -176,9 +176,11 @@ after_migrate = "vivira_custom.rooms_management.setup.ensure_room_rent_slip_paym
 # ------------------------------
 #
 # Specify custom mixins to extend the standard doctype controller.
-# extend_doctype_class = {
-# 	"Task": "vivira_custom.custom.task.CustomTaskMixin"
-# }
+extend_doctype_class = {
+	"Payment Entry": [
+		"vivira_custom.accounts.employee_advance_payment_entry.ViviraEmployeeAdvancePaymentEntryMixin"
+	],
+}
 
 # Overriding Methods
 # ------------------------------

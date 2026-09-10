@@ -1,0 +1,62 @@
+{
+ "app": "vivira_custom",
+ "creation": "2026-09-08 13:06:49.388082",
+ "docstatus": 0,
+ "doctype": "Workspace Sidebar",
+ "header_icon": "fuel",
+ "idx": 0,
+ "items": [
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "home",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Home",
+   "link_to": "Vehicle Fuel Management",
+   "link_type": "Workspace",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Fuel Receipt",
+   "link_to": "Fuel Receipt",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Fuel Issue",
+   "link_to": "Fuel Issue",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Vehicle Fuel Register",
+   "link_to": "Vehicle Fuel Register",
+   "link_type": "Report",
+   "show_arrow": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-09-08 13:08:18.971797",
+ "modified_by": "Administrator",
+ "module": "Vehicle Fuel Management",
+ "name": "Vehicle Fuel Management",
+ "owner": "Administrator",
+ "standard": 1,
+ "title": "Vehicle Fuel Management"
+}

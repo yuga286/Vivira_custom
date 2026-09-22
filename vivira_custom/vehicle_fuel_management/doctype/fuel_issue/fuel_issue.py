@@ -28,14 +28,12 @@ class FuelIssue(Document):
 		self.set_stock_and_mileage_values()
 		validate_project_fuel_balance(self, self.qty_issued)
 		make_fuel_ledger_entry(self, issued_qty=self.qty_issued)
-		self.sync_employee_history()
 		self.update_vehicle_odometer()
 
 	def on_cancel(self):
 		from vivira_custom.vehicle_fuel_management.fuel_stock import cancel_fuel_ledger_entries
 
 		cancel_fuel_ledger_entries(self.doctype, self.name)
-		self.remove_employee_history()
 
 	def set_defaults(self):
 		if not self.posting_time:
@@ -162,46 +160,6 @@ class FuelIssue(Document):
 			as_dict=True,
 		)[0]
 		return flt(row.amount) / flt(row.qty) if flt(row.qty) else 0
-
-	def sync_employee_history(self):
-		if not self.employee:
-			return
-
-		employee = frappe.get_doc("Employee", self.employee)
-		existing = None
-		for row in employee.get("fuel_issue_history") or []:
-			if row.fuel_issue == self.name:
-				existing = row
-				break
-
-		row = existing or employee.append("fuel_issue_history", {})
-		row.update(
-			{
-				"posting_date": self.posting_date,
-				"project": self.project,
-				"fuel_issue": self.name,
-				"item": self.fuel_type,
-				"item_name": frappe.db.get_value("Item", self.fuel_type, "item_name"),
-				"vehicle": self.vehicle,
-				"vehicle_no": self.vehicle_no,
-				"qty": self.qty_issued,
-				"uom": self.uom,
-				"odometer_reading": self.current_odometer_reading,
-				"mileage": self.average_mileage,
-			}
-		)
-		employee.flags.ignore_permissions = True
-		employee.save()
-
-	def remove_employee_history(self):
-		if not self.employee:
-			return
-
-		employee = frappe.get_doc("Employee", self.employee)
-		rows = [row for row in employee.get("fuel_issue_history") or [] if row.fuel_issue != self.name]
-		employee.set("fuel_issue_history", rows)
-		employee.flags.ignore_permissions = True
-		employee.save()
 
 	def update_vehicle_odometer(self):
 		if self.vehicle and flt(self.current_odometer_reading):

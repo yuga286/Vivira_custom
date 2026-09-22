@@ -1,0 +1,14 @@
+@media (min-width: 992px) {
+	.layout-side-section,
+	.desk-sidebar,
+	.workspace-sidebar {
+		flex: 0 0 280px;
+		width: 280px;
+		max-width: 280px;
+	}
+
+	.layout-main-section-wrapper,
+	.layout-main-section {
+		min-width: 0;
+	}
+}

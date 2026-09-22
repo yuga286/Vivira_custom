@@ -16,15 +16,16 @@ def after_migrate():
 
 
 def create_module_def():
-	if not frappe.db.exists("Module Def", "Vehicle Fuel Management"):
-		frappe.get_doc(
-			{
-				"doctype": "Module Def",
-				"module_name": "Vehicle Fuel Management",
-				"app_name": "vivira_custom",
-				"custom": 0,
-			}
-		).insert(ignore_permissions=True)
+	for module_name in ("Vehicle Fuel Management",):
+		if not frappe.db.exists("Module Def", module_name):
+			frappe.get_doc(
+				{
+					"doctype": "Module Def",
+					"module_name": module_name,
+					"app_name": "vivira_custom",
+					"custom": 0,
+				}
+			).insert(ignore_permissions=True)
 
 
 def create_roles():
@@ -39,18 +40,25 @@ def create_custom_fields_for_fuel_management():
 	custom_fields = {
 		"Employee": [
 			{
+				"fieldname": "subcontractor_supplier",
+				"fieldtype": "Link",
+				"label": "Subcontractor / Supplier",
+				"options": "Supplier",
+				"insert_after": "reports_to",
+			},
+			{
 				"fieldname": "fuel_issue_history_section",
 				"fieldtype": "Section Break",
 				"label": "Issue History",
 				"insert_after": "connections_tab",
 				"collapsible": 1,
-			},
-			{
-				"fieldname": "fuel_issue_history",
-				"fieldtype": "Table",
-				"label": "Issue History",
-				"options": "Employee Fuel Issue History",
-				"insert_after": "fuel_issue_history_section",
+				},
+				{
+					"fieldname": "issue_history",
+					"fieldtype": "Table",
+					"label": "Issue History",
+					"options": "Employee Fuel Issue History",
+					"insert_after": "fuel_issue_history_section",
 				"read_only": 1,
 			},
 		],
@@ -110,6 +118,11 @@ def create_indexes():
 			["employee", "posting_date"],
 		],
 		"Fuel Receipt": [["project", "fuel_type", "posting_date"], ["supplier", "posting_date"]],
+		"Material Issued": [
+			["project", "posting_date"],
+			["employee", "posting_date"],
+			["subcontractor_supplier", "posting_date"],
+		],
 	}
 	for doctype, doctype_indexes in indexes.items():
 		if frappe.db.table_exists(f"tab{doctype}"):
@@ -135,6 +148,7 @@ def ensure_workspace_for_desk():
 	)
 	add_workspace_roles(workspace.name)
 	ensure_workspace_report_links(workspace.name)
+	remove_employee_fuel_issue_report_from_workspace(workspace.name)
 	workspace.reload()
 	ensure_workspace_sidebar(workspace)
 	frappe.clear_cache()
@@ -161,6 +175,54 @@ def ensure_fuel_register_report_access():
 		report_name,
 		("System Manager", "Fuel Manager", "Fuel User", "Project Manager", "Projects User", "Accounts User"),
 	)
+
+
+def ensure_material_workspace_report_links(workspace_name):
+	report_name = "Store Reconciliation"
+	old_report_name = "Store Reconciliation Report"
+	workspace = frappe.get_doc("Workspace", workspace_name)
+	changed = False
+	for child_table in ("links", "shortcuts"):
+		rows = []
+		for row in workspace.get(child_table, []):
+			if row.get("link_to") in (report_name, old_report_name) or row.get("label") in (
+				report_name,
+				old_report_name,
+			):
+				changed = True
+				continue
+			if row.get("link_to") == old_report_name or row.get("label") == old_report_name:
+				row.label = report_name
+				row.link_to = report_name
+				changed = True
+			if row.get("link_to") == "Material Issued":
+				row.label = "Site Material Consumption"
+				row.link_to = "Site Material Consumption"
+				if child_table == "links":
+					row.link_type = "DocType"
+				if child_table == "shortcuts":
+					row.type = "DocType"
+					row.doc_view = "List"
+				changed = True
+			rows.append(row)
+		workspace.set(child_table, rows)
+
+	if changed:
+		for row in workspace.get("links", []):
+			if row.get("type") == "Card Break" and row.get("label") == "Reports":
+				row.link_count = sum(
+					1
+					for link in workspace.get("links", [])
+					if link.get("type") == "Link" and link.get("link_type") == "Report"
+				)
+		workspace.save(ignore_permissions=True)
+		for doctype in ("Workspace Link", "Workspace Shortcut", "Workspace Sidebar Item"):
+			if not frappe.db.table_exists(f"tab{doctype}"):
+				continue
+			for label in (report_name, old_report_name):
+				frappe.db.delete(doctype, {"parent": workspace_name, "link_to": label})
+				frappe.db.delete(doctype, {"parent": workspace_name, "label": label})
+		frappe.db.commit()
 
 
 def ensure_workspace_report_links(workspace_name):
@@ -204,11 +266,54 @@ def ensure_workspace_report_links(workspace_name):
 	frappe.db.commit()
 
 
+def remove_employee_fuel_issue_report_from_workspace(workspace_name):
+	report_name = "Employee Fuel Issue Report"
+	if not frappe.db.exists("Workspace", workspace_name):
+		return
+
+	workspace = frappe.get_doc("Workspace", workspace_name)
+	changed = False
+	for child_table in ("links", "shortcuts"):
+		rows = []
+		for row in workspace.get(child_table, []):
+			if row.get("link_to") == report_name or row.get("label") == report_name:
+				changed = True
+				continue
+			rows.append(row)
+		workspace.set(child_table, rows)
+
+	if changed:
+		for row in workspace.get("links", []):
+			if row.get("type") == "Card Break" and row.get("label") == "Reports":
+				row.link_count = sum(
+					1
+					for link in workspace.get("links", [])
+					if link.get("type") == "Link" and link.get("link_type") == "Report"
+				)
+		workspace.save(ignore_permissions=True)
+
+	for doctype in ("Workspace Link", "Workspace Shortcut", "Workspace Sidebar Item"):
+		if not frappe.db.table_exists(f"tab{doctype}"):
+			continue
+		frappe.db.delete(doctype, {"parent": workspace_name, "link_to": report_name})
+		frappe.db.delete(doctype, {"parent": workspace_name, "label": report_name})
+
+	frappe.db.commit()
+
+
 def add_workspace_roles(workspace_name):
 	add_roles_to_parent(
 		"Workspace",
 		workspace_name,
 		("System Manager", "Fuel Manager", "Fuel User", "Project Manager", "Projects User", "Accounts User"),
+	)
+
+
+def add_material_workspace_roles(workspace_name):
+	add_roles_to_parent(
+		"Workspace",
+		workspace_name,
+		("System Manager", "Fuel Manager", "Fuel User", "Project Manager", "Projects User"),
 	)
 
 
@@ -234,37 +339,42 @@ def add_roles_to_parent(parenttype, parent, roles):
 
 
 def ensure_workspace_sidebar(workspace):
-	if not frappe.db.exists("Workspace Sidebar", "Vehicle Fuel Management"):
+	ensure_named_workspace_sidebar(workspace, "Vehicle Fuel Management", workspace.icon or "fuel")
+
+
+def ensure_named_workspace_sidebar(workspace, sidebar_name, header_icon):
+	if not frappe.db.exists("Workspace Sidebar", sidebar_name):
 		frappe.get_doc(
 			{
 				"doctype": "Workspace Sidebar",
 				"title": workspace.title or workspace.name,
-				"header_icon": workspace.icon or "fuel",
-				"module": "Vehicle Fuel Management",
+				"header_icon": header_icon,
+				"module": workspace.module,
 				"app": "vivira_custom",
 				"standard": 1,
+				"name": sidebar_name,
 			}
 		).insert(ignore_permissions=True)
 	else:
 		frappe.db.set_value(
 			"Workspace Sidebar",
-			"Vehicle Fuel Management",
+			sidebar_name,
 			{
 				"title": workspace.title or workspace.name,
-				"header_icon": workspace.icon or "fuel",
-				"module": "Vehicle Fuel Management",
+				"header_icon": header_icon,
+				"module": workspace.module,
 				"app": "vivira_custom",
 				"standard": 1,
 			},
 			update_modified=False,
 		)
 
-	frappe.db.delete("Workspace Sidebar Item", {"parent": "Vehicle Fuel Management"})
+	frappe.db.delete("Workspace Sidebar Item", {"parent": sidebar_name})
 	for item in get_workspace_sidebar_items(workspace):
 		item.update(
 			{
 				"doctype": "Workspace Sidebar Item",
-				"parent": "Vehicle Fuel Management",
+				"parent": sidebar_name,
 				"parenttype": "Workspace Sidebar",
 				"parentfield": "items",
 			}

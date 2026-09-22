@@ -25,7 +25,7 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/vivira_custom/css/vivira_custom.css"
+app_include_css = "/assets/vivira_custom/css/vivira_custom.css"
 # app_include_js = "/assets/vivira_custom/js/vivira_custom.js"
 
 # include js, css files in header of web template
@@ -43,7 +43,10 @@ app_license = "mit"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+	"BOM": "public/js/manufacturing_dimensions.js",
+	"Work Order": "public/js/manufacturing_dimensions.js",
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -141,8 +144,42 @@ doc_events = {
 	"Payment Entry": {
 		"on_submit": "vivira_custom.rooms_management.payment.update_room_rent_slip_from_payment_entry",
 		"on_cancel": "vivira_custom.rooms_management.payment.update_room_rent_slip_from_payment_entry",
-	}
+	},
+	"BOM": {
+		"validate": "vivira_custom.manufacturing.dimensions.calculate_bom_dimensions",
+	},
+	"Work Order": {
+		"validate": "vivira_custom.manufacturing.dimensions.calculate_work_order_dimensions",
+	},
 }
+
+fixtures = [
+	{
+		"dt": "Custom Field",
+		"filters": [
+			[
+				"dt",
+				"in",
+				[
+					"BOM Item",
+					"Work Order Item",
+				],
+			],
+			[
+				"fieldname",
+				"in",
+				[
+					"thickness_mm",
+					"width_mm",
+					"length_mm",
+					"total_area_sqm",
+					"unit_weight_kg_sqm",
+					"total_weight_kg",
+				],
+			],
+		],
+	}
+]
 
 before_migrate = "vivira_custom.vehicle_fuel_management.setup.before_migrate"
 

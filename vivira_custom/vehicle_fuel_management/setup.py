@@ -2,30 +2,12 @@ import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 
-def before_migrate():
-	create_module_def()
-
-
 def after_migrate():
-	create_module_def()
 	create_roles()
 	create_custom_fields_for_fuel_management()
 	create_indexes()
 	ensure_fuel_register_report_access()
 	ensure_workspace_for_desk()
-
-
-def create_module_def():
-	for module_name in ("Vehicle Fuel Management",):
-		if not frappe.db.exists("Module Def", module_name):
-			frappe.get_doc(
-				{
-					"doctype": "Module Def",
-					"module_name": module_name,
-					"app_name": "vivira_custom",
-					"custom": 0,
-				}
-			).insert(ignore_permissions=True)
 
 
 def create_roles():
@@ -146,7 +128,7 @@ def ensure_workspace_for_desk():
 		},
 		update_modified=False,
 	)
-	add_workspace_roles(workspace.name)
+	clear_workspace_roles(workspace.name)
 	ensure_workspace_report_links(workspace.name)
 	remove_employee_fuel_issue_report_from_workspace(workspace.name)
 	workspace.reload()
@@ -301,12 +283,8 @@ def remove_employee_fuel_issue_report_from_workspace(workspace_name):
 	frappe.db.commit()
 
 
-def add_workspace_roles(workspace_name):
-	add_roles_to_parent(
-		"Workspace",
-		workspace_name,
-		("System Manager", "Fuel Manager", "Fuel User", "Project Manager", "Projects User", "Accounts User"),
-	)
+def clear_workspace_roles(workspace_name):
+	frappe.db.delete("Has Role", {"parenttype": "Workspace", "parent": workspace_name})
 
 
 def add_material_workspace_roles(workspace_name):

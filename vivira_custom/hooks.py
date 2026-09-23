@@ -181,8 +181,6 @@ fixtures = [
 	}
 ]
 
-before_migrate = "vivira_custom.vehicle_fuel_management.setup.before_migrate"
-
 after_migrate = [
 	"vivira_custom.rooms_management.setup.ensure_room_rent_slip_payment_entry_field",
 	"vivira_custom.vehicle_fuel_management.setup.after_migrate",

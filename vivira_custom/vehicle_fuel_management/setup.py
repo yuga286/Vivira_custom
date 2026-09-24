@@ -129,10 +129,12 @@ def ensure_workspace_for_desk():
 		update_modified=False,
 	)
 	clear_workspace_roles(workspace.name)
+	add_vehicle_workspace_roles(workspace.name)
 	ensure_workspace_report_links(workspace.name)
 	remove_employee_fuel_issue_report_from_workspace(workspace.name)
 	workspace.reload()
 	ensure_workspace_sidebar(workspace)
+	ensure_desktop_icon(workspace)
 	frappe.clear_cache()
 
 
@@ -287,6 +289,14 @@ def clear_workspace_roles(workspace_name):
 	frappe.db.delete("Has Role", {"parenttype": "Workspace", "parent": workspace_name})
 
 
+def add_vehicle_workspace_roles(workspace_name):
+	add_roles_to_parent(
+		"Workspace",
+		workspace_name,
+		("System Manager", "Accounts User", "Project Manager", "Projects User", "Fuel Manager", "Fuel User"),
+	)
+
+
 def add_material_workspace_roles(workspace_name):
 	add_roles_to_parent(
 		"Workspace",
@@ -318,6 +328,26 @@ def add_roles_to_parent(parenttype, parent, roles):
 
 def ensure_workspace_sidebar(workspace):
 	ensure_named_workspace_sidebar(workspace, "Vehicle Fuel Management", workspace.icon or "fuel")
+
+
+def ensure_desktop_icon(workspace):
+	icon_name = workspace.name
+	values = {
+		"label": workspace.name,
+		"icon_type": "Link",
+		"link_type": "Workspace Sidebar",
+		"link_to": workspace.name,
+		"icon": workspace.icon or "fuel",
+		"hidden": 0,
+		"parent_icon": "",
+	}
+	if frappe.db.exists("Desktop Icon", icon_name):
+		frappe.db.set_value("Desktop Icon", icon_name, values, update_modified=False)
+	else:
+		icon = frappe.get_doc({"doctype": "Desktop Icon", **values})
+		icon.insert(ignore_permissions=True)
+
+	frappe.cache.delete_value("desktop_icons")
 
 
 def ensure_named_workspace_sidebar(workspace, sidebar_name, header_icon):

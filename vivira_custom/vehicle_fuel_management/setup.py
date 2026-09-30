@@ -334,11 +334,14 @@ def ensure_desktop_icon(workspace):
 	icon_name = workspace.name
 	values = {
 		"label": workspace.name,
+		"app": "vivira_custom",
 		"icon_type": "Link",
 		"link_type": "Workspace Sidebar",
 		"link_to": workspace.name,
 		"icon": workspace.icon or "fuel",
 		"hidden": 0,
+		"standard": 1,
+		"idx": 30,
 		"parent_icon": "",
 	}
 	if frappe.db.exists("Desktop Icon", icon_name):
@@ -347,7 +350,7 @@ def ensure_desktop_icon(workspace):
 		icon = frappe.get_doc({"doctype": "Desktop Icon", **values})
 		icon.insert(ignore_permissions=True)
 
-	frappe.cache.delete_value("desktop_icons")
+	frappe.cache.delete_key("desktop_icons")
 
 
 def ensure_named_workspace_sidebar(workspace, sidebar_name, header_icon):

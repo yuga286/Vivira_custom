@@ -44,7 +44,6 @@ frappe.ui.form.on("Fuel Issue", {
 				"license_plate",
 				"make",
 				"model",
-				"employee",
 				"fuel_type",
 				"uom",
 				"ownership_status",
@@ -56,7 +55,6 @@ frappe.ui.form.on("Fuel Issue", {
 				const v = r.message || {};
 				frm.set_value("vehicle_no", v.license_plate || frm.doc.vehicle);
 				frm.set_value("vehicle_name", [v.make, v.model].filter(Boolean).join(" "));
-				if (!frm.doc.employee) frm.set_value("employee", v.employee);
 				if (!frm.doc.fuel_type && v.fuel_type) {
 					frappe.db.exists("Item", v.fuel_type).then((exists) => {
 						if (exists) frm.set_value("fuel_type", v.fuel_type);
@@ -71,12 +69,6 @@ frappe.ui.form.on("Fuel Issue", {
 			});
 	},
 
-	employee(frm) {
-		if (!frm.doc.employee) return;
-		frappe.db.get_value("Employee", frm.doc.employee, "employee_name").then((r) => {
-			frm.set_value("employee_name", r.message?.employee_name);
-		});
-	},
 
 	supplier(frm) {
 		if (frm.doc.owner_type !== "Supplier" || !frm.doc.supplier) return;

@@ -17,7 +17,6 @@ class FuelIssue(Document):
 	def validate(self):
 		self.set_defaults()
 		self.set_vehicle_details()
-		self.set_employee_details()
 		self.validate_project_company()
 		self.validate_qty()
 		self.set_stock_and_mileage_values()
@@ -54,7 +53,6 @@ class FuelIssue(Document):
 				"license_plate",
 				"make",
 				"model",
-				"employee",
 				"fuel_type",
 				"uom",
 				"ownership_status",
@@ -69,8 +67,6 @@ class FuelIssue(Document):
 
 		self.vehicle_no = vehicle.license_plate or self.vehicle
 		self.vehicle_name = " ".join(filter(None, [vehicle.make, vehicle.model]))
-		if not self.employee and vehicle.employee:
-			self.employee = vehicle.employee
 		if not self.fuel_type and vehicle.fuel_type and frappe.db.exists("Item", vehicle.fuel_type):
 			self.fuel_type = vehicle.fuel_type
 		if not self.uom and vehicle.uom:
@@ -84,13 +80,11 @@ class FuelIssue(Document):
 		if not self.owner_name and vehicle.owner_name:
 			self.owner_name = vehicle.owner_name
 
-	def set_employee_details(self):
-		if self.employee:
-			self.employee_name = frappe.db.get_value("Employee", self.employee, "employee_name")
-		if self.supplier and self.owner_type == "Supplier":
-			self.owner_name = frappe.db.get_value("Supplier", self.supplier, "supplier_name")
-		if not self.owner_type:
-			self.owner_type = "Company" if self.vehicle_status == "Own" else "Other"
+	# def set_employee_details(self):
+	# 	if self.supplier and self.owner_type == "Supplier":
+	# 		self.owner_name = frappe.db.get_value("Supplier", self.supplier, "supplier_name")
+	# 	if not self.owner_type:
+	# 		self.owner_type = "Company" if self.vehicle_status == "Own" else "Other"
 
 	def validate_qty(self):
 		if flt(self.qty_issued) <= 0:
